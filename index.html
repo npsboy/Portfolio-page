@@ -23,15 +23,14 @@
         </header>
 
         <!-- Status Message -->
-        <div class="status-message">
-            <div class="status-line dim">[ 1.203] profile.service: ready</div>
-            <div class="status-line">> Hello there! Feel free to check out my projects.</div>
+        <div class="status-message" id="status-message">
+            <!-- lines will be populated by script -->
         </div>
 
         <!-- Projects Grid -->
         <div class="projects-grid">
             <!-- Card 1: Delegate AI -->
-            <a href="#" class="project-card">
+            <a href="https://delegateai.npsboy.net" target="_blank" class="project-card">
                 <div class="card-content">
                     <img src="images/Delegate_AI_logo.png" alt="Delegate AI" class="project-icon">
                     <span class="project-name">Delegate <strong>AI</strong></span>
@@ -39,7 +38,7 @@
             </a>
 
             <!-- Card 2: Boring List -->
-            <a href="#" class="project-card">
+            <a href="https://boringlist.npsboy.net" target="_blank" class="project-card">
                 <div class="card-content">
                     <img src="images/Boring_list_logo.png" alt="Boring List" class="project-icon">
                     <span class="project-name font-serif">Boring List</span>
@@ -47,7 +46,7 @@
             </a>
 
             <!-- Card 3: Plan Panther -->
-            <a href="#" class="project-card">
+            <a href="https://planpanther.npsboy.net" target="_blank" class="project-card">
                 <div class="card-content">
                     <img src="images/plan_panther_logo.png" alt="Plan Panther" class="project-icon">
                     <span class="project-name font-serif">Plan Panther</span>
@@ -55,7 +54,7 @@
             </a>
 
             <!-- Card 4: Seating Randomiser -->
-            <a href="#" class="project-card">
+            <a href="https://seatingrandomiser.npsboy.net" target="_blank" class="project-card">
                 <div class="card-content">
                     <img src="images/Seating_randomiser_logo.png" alt="Seating Randomiser" class="project-icon">
                     <div class="project-text-stack">
@@ -66,7 +65,7 @@
             </a>
 
             <!-- Card 5: NPS Calendar -->
-            <a href="#" class="project-card">
+            <a href="https://npscalendar.npsboy.net" target="_blank" class="project-card">
                 <div class="card-content">
                         <img src="images\NPS_Calendar_logo.png" alt="NPS Countdown" class="project-icon" id="NPS_calendar_countdown">
                         <div class="calendar-title">
@@ -77,7 +76,7 @@
             </a>
 
             <!-- Card 6: Born Today -->
-            <a href="#" class="project-card">
+            <a href="https://borntoday.npsboy.net" target="_blank" class="project-card">
                 <div class="card-content">
                     <img src="images/Born_Today_logo.png" alt="Born Today" class="project-icon wide-icon">
                     <span class="project-name">Born Today</span>
@@ -85,5 +84,82 @@
             </a>
         </div>
     </div>
+    <script>
+    (function(){
+        const container = document.getElementById('status-message');
+
+        const lines = [
+            { text: '[ 1.201 ] initialising profile.service', persist: false },
+            { text: '[ 1.202 ] installing dependancies', persist: false },
+            { text: '[ 1.203 ] profile.service: ready', persist: true },
+            { text: '> Hello there! Feel free to check out my projects.', persist: true, newLine: true }
+        ];
+
+        const typeSpeed = 24; // ms per char (fast)
+        const deleteSpeed = 18; // ms per char (fast)
+        const waitAfterType = 1000; // ms wait after typing before delete
+        const waitAfterReady = 900; // ms wait after ready before greeting
+        const waitAfterDelete = 500; // ms wait after delete
+
+        function createLineElement() {
+            const line = document.createElement('div');
+            line.className = 'status-line typing-line';
+            const textSpan = document.createElement('span');
+            line.appendChild(textSpan);
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            line.appendChild(cursor);
+            return { line, textSpan, cursor };
+        }
+
+        function wait(ms){ return new Promise(r=>setTimeout(r, ms)); }
+
+        async function typeText(span, text){
+            for(let i=0;i<text.length;i++){
+                span.textContent += text[i];
+                await wait(typeSpeed);
+            }
+        }
+
+        async function deleteText(span){
+            const txt = span.textContent;
+            for(let i=txt.length-1;i>=0;i--){
+                span.textContent = txt.substring(0,i);
+                await wait(deleteSpeed);
+            }
+        }
+
+        (async function run(){
+            for(let i=0;i<lines.length;i++){
+                const item = lines[i];
+                // For greeting that should appear on same console below ready, create new line only when requested
+                const { line, textSpan, cursor } = createLineElement();
+                // mark the final greeting line so it can be styled slightly whiter
+                if (i === lines.length - 1) line.classList.add('greeting');
+                container.appendChild(line);
+
+                // Type
+                await typeText(textSpan, item.text);
+
+                if(item.persist && i === 2){
+                    // this is the ready line (index 2). keep it and wait, then type greeting as new line
+                    await wait(waitAfterReady);
+                    continue;
+                }
+
+                await wait(waitAfterType);
+
+                if(!item.persist){
+                    await deleteText(textSpan);
+                    // remove the line after deleting for cleanliness
+                    container.removeChild(line);
+                }
+
+                await wait(waitAfterDelete);
+            }
+
+        })();
+    })();
+    </script>
 </body>
 </html>

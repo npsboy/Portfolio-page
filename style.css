@@ -258,3 +258,27 @@ body {
 .project-card:nth-child(5) {
     padding: 0 1rem;
 }
+
+/* Typing effect styles */
+.status-message .typing-line {
+    color: var(--text-secondary);
+    white-space: pre; /* preserve spacing */
+}
+
+.status-message .cursor {
+    display: inline-block;
+    width: 10px;
+    margin-left: 4px;
+    background-color: var(--text-secondary);
+    animation: blink 1s steps(2, start) infinite;
+    vertical-align: bottom;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+/* Greeting (final line) - slightly whiter */
+.status-message .typing-line.greeting {
+    color: var(--text-primary);
+}
