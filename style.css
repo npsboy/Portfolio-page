@@ -275,7 +275,8 @@ body {
 /* Typing effect styles */
 .status-message .typing-line {
     color: var(--text-secondary);
-    white-space: pre; /* preserve spacing */
+    white-space: pre-wrap; /* preserve spacing while allowing wrap */
+    overflow-wrap: anywhere;
 }
 
 .status-message .cursor {
