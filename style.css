@@ -132,7 +132,7 @@ body {
     background-color: var(--card-bg);
     border: 1px solid #2a2a2a;
     border-radius: var(--border-radius);
-    height: 80px;
+    min-height: 104px;
     text-decoration: none;
     color: var(--text-primary);
     display: flex;
@@ -158,6 +158,13 @@ body {
     justify-content: flex-start;
 }
 
+.card-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
+}
+
 .project-icon {
     width: 32px;
     height: 32px;
@@ -177,6 +184,12 @@ body {
     font-size: 1.25rem;
     font-weight: 500;
     white-space: nowrap;
+}
+
+.project-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.2;
 }
 
 .project-name strong {
